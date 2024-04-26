@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "cell_app"
+version = "0.1.0"
+description = ""
+authors = ["None"]
+readme = "README.md"
+packages = [
+    { include = "src" }
+    ]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pygame = "^2.5.2"
+numpy = "^1.26.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
