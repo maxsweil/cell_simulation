@@ -7,18 +7,27 @@ random.seed(SEED)
 # N_OBJ >= 2, SEED = 3 for collision testing
 
 class sim_game():
-    def __init__(self, surface, width=1920, height=1080, scale=10):
+    def __init__(self, surface, width=1920, height=1080):
+
+        # Initializing game surface
         self.surface = surface
         self.width = width
         self.height = height
-        self.scale = scale
+
+        # Initializing game objects
         self.objs = [foo(self.width, self.height) for i in range(N_OBJS)]
 
     def draw_objs(self):
+        """
+        Method for drawing game objects
+        """
         for obj in self.objs:
             obj.render(self.surface)
     
     def update_objs(self):
+        """
+        Method to update object between frames
+        """
         # Updating x position
         for obj in self.objs:
             new_loc = [obj.rect.x+obj.x_velo, obj.rect.y]
@@ -40,18 +49,19 @@ class sim_game():
             obj.resolve_collisions(x_coll, y_coll)
 
 
-        
-
 class foo():
     def __init__(self, screen_width, screen_height):
+        # Initializing color and size
         self.color = (85, 200, 215)
         self.size = 30
         
+        # Setting screen bounds
         self.x_min = 0
         self.y_min = 0
         self.x_max = screen_width - self.size
         self.y_max = screen_height - self.size
 
+        # Initializing veocity
         self.x_velo = random.randint(-5, 5)
         self.y_velo = random.randint(-5, 5)
 
@@ -59,10 +69,14 @@ class foo():
         #self.y_velo = 1
         #self.rect = pygame.Rect(5, 5, self.size, self.size)
 
+        # Initializing object as pygame rectangle and creating copy
         self.rect = pygame.Rect(random.randint(0, self.x_max), random.randint(0, self.y_max), self.size, self.size)
         self.last_rect = self.rect.copy()
 
     def update_loc(self, new_x, new_y, save_frame):
+        """
+        Method for updating the location of object
+        """
         if save_frame:
             self.last_rect = self.rect.copy()
         self.rect.update(max(min(new_x, self.x_max), self.x_min),
@@ -71,12 +85,18 @@ class foo():
                          self.size)
 
     def bounce(self, x, y):
+        """
+        Method for reversing the x and/or y direction of object
+        """
         if x:
             self.x_velo *= -1
         if y:
             self.y_velo *= -1
 
     def check_collisions(self, oth_rects):
+        """
+        Method for checking if object is colliding with a list of other objects
+        """
         coll = self.rect.collidedict(oth_rects)
         if coll:
             return coll[1]
@@ -84,6 +104,9 @@ class foo():
             return False
 
     def resolve_collisions(self, x_coll, y_coll):
+        """
+        Method for resolving collision in x and/or y direction
+        """
 
         # Resolving collisions with other rects
         if x_coll:
@@ -109,8 +132,10 @@ class foo():
         if (self.rect.right >= col_hitbox.left or self.rect.left <= col_hitbox.right):# and (self.rect.top < col_hitbox.bottom or self.rect.bottom > col_hitbox.top):
             self.bounce(1,0)'''
 
-
     def render(self, surface):
+        """
+        Method to render object on surface
+        """
         pygame.draw.rect(surface, self.color, self.rect)
         
     
